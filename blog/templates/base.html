@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Blog</title>
+</head>
+<body>
+    <header>
+        <h1><a href="{% url 'listar_posts' %}">Meu Blog</a></h1>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

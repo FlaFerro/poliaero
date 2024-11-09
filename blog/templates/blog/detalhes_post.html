@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>{{ post.titulo }}</h2>
+    <p>{{ post.conteudo|safe }}</p>
+    <p><small>Publicado em: {{ post.data_postagem|date:"d/m/Y H:i" }}</small></p>
+    <a href="{% url 'editar_post' post.pk %}">Editar</a> | 
+    <a href="{% url 'remover_post' post.pk %}">Remover</a>
+{% endblock %}
