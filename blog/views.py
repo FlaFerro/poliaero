@@ -1,33 +1,37 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .forms import PostForm
-from django.urls import reverse
+from django.urls import reverse_lazy
 
-def listar_posts(request):
-    posts = Post.objects.all()
-    return render(request, 'blog/listar_posts.html', {'posts': posts})
+# Listar todos os posts
+class ListarPostsView(ListView):
+    model = Post
+    template_name = 'blog/listar_posts.html'
+    context_object_name = 'posts'  # Nome da variável para acessar no template
 
-def detalhes_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/detalhes_post.html', {'post': post})
+# Detalhar um post específico
+class DetalhesPostView(DetailView):
+    model = Post
+    template_name = 'blog/detalhes_post.html'
+    context_object_name = 'post'  # Nome da variável para acessar no template
 
-def criar_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form.save()  # Salva o novo post no banco de dados
-            return redirect('listar_posts')  # Redireciona para a lista de posts
-    else:
-        form = PostForm()
-    return render(request, 'blog/form_post.html', {'form': form})
+# Criar um novo post
+class CriarPostView(CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/form_post.html'
+    success_url = reverse_lazy('listar_posts')  # Redireciona para a lista de posts após criar
 
-def editar_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            form.save()  # Salva as alterações no post existente
-            return redirect('detalhes_post', pk=post.pk)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'blog/form_post.html', {'form': form})
+# Editar um post existente
+class EditarPostView(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/form_post.html'
+    success_url = reverse_lazy('listar_posts')
+
+# Deletar um post
+class DeletarPostView(DeleteView):
+    model = Post
+    template_name = 'blog/confirmar_delecao.html'
+    success_url = reverse_lazy('listar_posts')

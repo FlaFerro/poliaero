@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Tem certeza de que deseja excluir o post "{{ post.titulo }}"?</h2>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Sim, excluir</button>
+    <a href="{% url 'listar_posts' %}">Cancelar</a>
+  </form>
+{% endblock %}
