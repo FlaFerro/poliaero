@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Posts na categoria: {{ categoria.nome }}</h2>
+    
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <h3><a href="{% url 'detalhes_post' post.pk %}">{{ post.titulo }}</a></h3>
+                    <p>{{ post.conteudo|slice:":100" }}...</p>
+                    <p><small>Publicado em: {{ post.data_postagem|date:"d/m/Y" }}</small></p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Não há posts nesta categoria.</p>
+    {% endif %}
+{% endblock %}

@@ -2,10 +2,18 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
+class Category(models.Model):
+    nome = models.CharField(max_length=100)
+    descricao = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.nome
+
 class Post(models.Model):
     titulo = models.CharField(max_length=100)
     conteudo = models.TextField()  # Armazena conteúdo HTML
     data_postagem = models.DateTimeField(auto_now_add=True)
+    categorias = models.ManyToManyField(Category, related_name='posts')
 
     def __str__(self):
         return self.titulo
@@ -18,3 +26,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author} on {self.created_date}'
+

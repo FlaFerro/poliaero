@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+    {% for categoria in post.categorias.all %}
+        <a href="{% url 'visualizar_categoria' categoria.id %}">{{ categoria.nome }}</a>
+    {% endfor %}
+
     <h2>{{ post.titulo }}</h2>
     <p>{{ post.conteudo|safe }}</p>
     <p><small>Publicado em: {{ post.data_postagem|date:"d/m/Y H:i" }}</small></p>

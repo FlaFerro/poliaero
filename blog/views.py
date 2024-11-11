@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, Comment
+from .models import Post, Comment, Category
 from .forms import PostForm
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -54,3 +54,16 @@ def add_comment(request, pk):
             comment = Comment(post=post, author=request.user, text=text, created_date=timezone.now())
             comment.save()
         return redirect('detalhes_post', pk=post.pk)
+
+def listar_categorias(request):
+    categorias = Category.objects.all()
+    return render(request, 'categorias/lista_categorias.html', {'categorias': categorias})
+
+def visualizar_categoria(request, categoria_id):
+    categoria = get_object_or_404(Category, id=categoria_id)
+    posts = Post.objects.filter(categorias=categoria)  # Filtra posts pela categoria
+
+    return render(request, 'blog/lista_posts.html', {
+        'categoria': categoria,
+        'posts': posts,
+    })

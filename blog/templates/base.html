@@ -7,6 +7,12 @@
 <body>
     <header>
         <h1><a href="{% url 'listar_posts' %}">Meu Blog</a></h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'listar_posts' %}">Home</a></li>
+                <li><a href="{% url 'listar_categorias' %}">Categorias</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         {% block content %}{% endblock %}

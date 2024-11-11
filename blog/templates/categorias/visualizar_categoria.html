@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Posts em {{ categoria.nome }}</h1>
+    <p>{{ categoria.descricao }}</p>
+    {% include "blog/lista_posts.html" with posts=posts %}
+{% endblock %}
