@@ -15,7 +15,7 @@
 
     <h3>Comentários</h3>
     <ul>
-        {% for comment in post.comments.all %}
+        {% for comment in comments %}
             <li>
                 <p><strong>{{ comment.author }}</strong> <small>em {{ comment.created_date|date:"d/m/Y H:i" }}</small></p>
                 <p>{{ comment.text }}</p>

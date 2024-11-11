@@ -18,6 +18,13 @@ class DetalhesPostView(DetailView):
     template_name = 'blog/detalhes_post.html'
     context_object_name = 'post'  # Nome da variável para acessar no template
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = self.get_object()  # Obtém o post atual
+        # Ordena os comentários do mais recente para o mais antigo
+        context['comments'] = post.comments.all().order_by('-created_date')
+        return context
+
 # Criar um novo post
 class CriarPostView(CreateView):
     model = Post
