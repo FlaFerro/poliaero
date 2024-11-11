@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm
 from django.urls import reverse_lazy
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 # Listar todos os posts
 class ListarPostsView(ListView):
@@ -35,3 +37,13 @@ class DeletarPostView(DeleteView):
     model = Post
     template_name = 'blog/confirmar_delecao.html'
     success_url = reverse_lazy('listar_posts')
+
+@login_required
+def add_comment(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        if text:
+            comment = Comment(post=post, author=request.user, text=text, created_date=timezone.now())
+            comment.save()
+        return redirect('detalhes_post', pk=post.pk)

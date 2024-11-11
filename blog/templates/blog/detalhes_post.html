@@ -1,8 +1,28 @@
 {% extends "base.html" %}
+
 {% block content %}
     <h2>{{ post.titulo }}</h2>
     <p>{{ post.conteudo|safe }}</p>
     <p><small>Publicado em: {{ post.data_postagem|date:"d/m/Y H:i" }}</small></p>
     <a href="{% url 'editar_post' post.pk %}">Editar</a> | 
     <a href="{% url 'deletar_post' post.pk %}">Remover</a>
+
+    <form method="post" action="{% url 'adicionar_comentario' post.pk %}">
+        {% csrf_token %}
+        <textarea name="text" rows="3" required></textarea><br>
+        <button type="submit">Comentar</button>
+    </form>
+
+    <h3>Comentários</h3>
+    <ul>
+        {% for comment in post.comments.all %}
+            <li>
+                <p><strong>{{ comment.author }}</strong> <small>em {{ comment.created_date|date:"d/m/Y H:i" }}</small></p>
+                <p>{{ comment.text }}</p>
+            </li>
+        {% empty %}
+            <p>Não há comentários ainda.</p>
+        {% endfor %}
+    </ul>
+    
 {% endblock %}
